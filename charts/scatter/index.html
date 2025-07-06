@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Scatter Plot Generator</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>body { padding: 2rem; }</style>
+</head>
+<body class="bg-light">
+  <div class="container">
+    <h1 class="text-center mb-4">Scatter Plot Generator</h1>
+    
+    <!-- Input Fields -->
+    <div class="row g-3 mb-4">
+      <div class="col-md-6">
+        <input type="number" step="any" id="xInput" class="form-control" placeholder="X value" />
+      </div>
+      <div class="col-md-6">
+        <input type="number" step="any" id="yInput" class="form-control" placeholder="Y value" />
+      </div>
+      <div class="col-md">
+        <button class="btn btn-primary w-100" onclick="addPoint()">Add Point</button>
+      </div>
+    </div>
+
+    <!-- Chart -->
+    <canvas id="scatterChart" height="150"></canvas>
+  </div>
+
+  <script>
+    const scatterData = {
+      datasets: [{
+        label: 'Plotted Points',
+        data: [],
+        backgroundColor: 'rgba(255, 99, 132, 0.7)'
+      }]
+    };
+
+    const config = {
+      type: 'scatter',
+      data: scatterData,
+      options: {
+        scales: {
+          x: { title: { display: true, text: 'X Axis' } },
+          y: { title: { display: true, text: 'Y Axis' } }
+        },
+        responsive: true,
+      }
+    };
+
+    const scatterChart = new Chart(document.getElementById('scatterChart'), config);
+
+    function addPoint() {
+      const x = parseFloat(document.getElementById('xInput').value);
+      const y = parseFloat(document.getElementById('yInput').value);
+      if (!isNaN(x) && !isNaN(y)) {
+        scatterChart.data.datasets[0].data.push({ x, y });
+        scatterChart.update();
+        document.getElementById('xInput').value = '';
+        document.getElementById('yInput').value = '';
+      }
+    }
+  </script>
+</body>
+</html>
