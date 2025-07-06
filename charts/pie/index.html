@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pie Chart Generator</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>body { padding: 2rem; }</style>
+</head>
+<body class="bg-light">
+
+  <div class="container">
+    <h1 class="text-center mb-4">Pie Chart Generator</h1>
+
+    <!-- Input UI -->
+    <div class="row g-3 mb-4">
+      <div class="col-md-6">
+        <input type="text" id="labelInput" class="form-control" placeholder="Label (e.g., Apples)" />
+      </div>
+      <div class="col-md-6">
+        <input type="number" step="any" id="valueInput" class="form-control" placeholder="Value (e.g., 30)" />
+      </div>
+      <div class="col-md">
+        <button class="btn btn-success w-100" onclick="addSlice()">Add Slice</button>
+      </div>
+    </div>
+
+    <!-- Canvas Element -->
+    <canvas id="pieChart" height="150"></canvas>
+  </div>
+
+  <script>
+    const labels = [];
+    const values = [];
+    const colors = [];
+
+    const pieChart = new Chart(document.getElementById('pieChart'), {
+      type: 'pie',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Pie Dataset',
+          data: values,
+          backgroundColor: colors
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { position: 'bottom' }
+        }
+      }
+    });
+
+    function getRandomColor() {
+      const r = Math.floor(Math.random() * 200);
+      const g = Math.floor(Math.random() * 200);
+      const b = Math.floor(Math.random() * 200);
+      return `rgba(${r}, ${g}, ${b}, 0.7)`;
+    }
+
+    function addSlice() {
+      const label = document.getElementById('labelInput').value;
+      const value = parseFloat(document.getElementById('valueInput').value);
+      if (label && !isNaN(value)) {
+        labels.push(label);
+        values.push(value);
+        colors.push(getRandomColor());
+        pieChart.update();
+        document.getElementById('labelInput').value = '';
+        document.getElementById('valueInput').value = '';
+      }
+    }
+  </script>
+
+</body>
+</html>
