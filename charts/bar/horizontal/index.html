@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Horizontal Bar Chart Generator</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>body { padding: 2rem; }</style>
+</head>
+<body class="bg-light">
+  <div class="container">
+    <h1 class="mb-4 text-center">Horizontal Bar Chart Generator</h1>
+
+    <!-- Input Form -->
+    <div class="row g-3 mb-4">
+      <div class="col-md-6">
+        <label class="form-label">Label:</label>
+        <input type="text" id="labelInput" class="form-control" placeholder="Label (e.g., Q1)" />
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Value:</label>
+        <input type="number" id="valueInput" class="form-control" placeholder="Value (e.g., 25)" />
+      </div>
+      <div class="col-md">
+        <button class="btn btn-primary w-100" onclick="addData()">Add Data</button>
+      </div>
+    </div>
+
+    <!-- Chart Area -->
+    <canvas id="barChart" height="150"></canvas>
+  </div>
+
+  <script>
+    const labels = [];
+    const data = {
+      labels: labels,
+      datasets: [{
+        label: 'Custom Data',
+        data: [],
+        backgroundColor: 'rgba(54, 162, 235, 0.6)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 1
+      }]
+    };
+
+    const config = {
+      type: 'bar',
+      data: data,
+      options: {
+        indexAxis: y,
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        },
+        responsive: true
+      }
+    };
+
+    const barChart = new Chart(document.getElementById('barChart'), config);
+
+    function addData() {
+      const label = document.getElementById('labelInput').value;
+      const value = parseFloat(document.getElementById('valueInput').value);
+      if (label && !isNaN(value)) {
+        labels.push(label);
+        barChart.data.datasets[0].data.push(value);
+        barChart.update();
+        document.getElementById('labelInput').value = '';
+        document.getElementById('valueInput').value = '';
+      }
+    }
+  </script>
+</body>
+</html>
